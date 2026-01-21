@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    tools{
+        maven "maven3.9"
+    }
     environment {
         DOCKER_REPO = "travvizzz/spring-helloworld"
         APP_JAR = "target\\Spring-Html-0.0.1-SNAPSHOT.jar"
@@ -11,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/travvizzzz/SpringHelloWorld.git'
+                git branch: 'main', url:  'https://github.com/travvizzzz/SpringHelloWorld.git'
             }
         }
 
