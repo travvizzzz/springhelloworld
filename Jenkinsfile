@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/travvizzzz/SpringHelloWorld.git'
+                    url: 'https://github.com/travvizzzz/springhelloworld.git'
             }
         }
 
