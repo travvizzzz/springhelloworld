@@ -21,7 +21,7 @@ pipeline {
 
         stage('Build Jar') {
             steps {
-                bat 'mvn clean package -DskipTests'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
@@ -30,7 +30,7 @@ pipeline {
                 script {
                     def imageTag = env.BUILD_NUMBER
 
-                    bat """
+                    sh """
                     set DOCKER_BUILDKIT=0
                     set COMPOSE_DOCKER_CLI_BUILD=0
                     docker build --no-cache -t %DOCKER_REPO%:${imageTag} .
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 echo "Running container on port ${DOCKER_HOST_PORT}..."
 
-                bat """
+                sh """
                 docker stop spring-helloworld || exit 0
                 docker rm spring-helloworld || exit 0
                 docker run -d --name spring-helloworld -p ${DOCKER_HOST_PORT}:8080 %DOCKER_REPO%:${env.IMAGE_TAG}
