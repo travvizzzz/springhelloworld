@@ -33,7 +33,7 @@ pipeline {
                     sh """
                     set DOCKER_BUILDKIT=0
                     set COMPOSE_DOCKER_CLI_BUILD=0
-                    docker build --no-cache -t %DOCKER_REPO%:${imageTag} .
+                    docker build --no-cache -t $DOCKER_REPO:${imageTag} .
                     docker tag %DOCKER_REPO%:${imageTag} %DOCKER_REPO%:latest
                     """
 
