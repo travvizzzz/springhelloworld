@@ -31,10 +31,11 @@ pipeline {
                     def imageTag = env.BUILD_NUMBER
 
                     sh """
-                    set DOCKER_BUILDKIT=0
-                    set COMPOSE_DOCKER_CLI_BUILD=0
-                    docker build --no-cache -t $DOCKER_REPO:${imageTag} .
-                    docker tag %DOCKER_REPO%:${imageTag} %DOCKER_REPO%:latest
+                    export DOCKER_BUILDKIT=0
+                    export COMPOSE_DOCKER_CLI_BUILD=0
+
+                    docker build --no-cache -t ${DOCKER_REPO}:${imageTag} .
+                    docker tag ${DOCKER_REPO}:${imageTag} ${DOCKER_REPO}:latest
                     """
 
                     env.IMAGE_TAG = imageTag
@@ -47,9 +48,13 @@ pipeline {
                 echo "Running container on port ${DOCKER_HOST_PORT}..."
 
                 sh """
-                docker stop spring-helloworld || exit 0
-                docker rm spring-helloworld || exit 0
-                docker run -d --name spring-helloworld -p ${DOCKER_HOST_PORT}:8080 %DOCKER_REPO%:${env.IMAGE_TAG}
+                docker stop spring-helloworld || true
+                docker rm spring-helloworld || true
+
+                docker run -d \
+                  --name spring-helloworld \
+                  -p ${DOCKER_HOST_PORT}:8080 \
+                  ${DOCKER_REPO}:${IMAGE_TAG}
                 """
             }
         }
